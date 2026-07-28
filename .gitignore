@@ -1,0 +1,48 @@
+# Operating-system and editor files
+.DS_Store
+.AppleDouble
+.LSOverride
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python caches and test/tooling output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Local environments and secrets
+.venv/
+venv/
+env/
+*.egg-info/
+.env
+.env.*
+
+# Experiment checkpoints and generated binary artifacts
+results/**/checkpoints/
+results/**/standardization/
+results/**/*.pt
+results/**/*.pth
+results/**/*.ckpt
+results/**/*.safetensors
+results/**/*.npz
+results/**/*.npy
+results/**/*.pkl
+results/**/*.pickle
+results/**/*.log
+models/
+checkpoints/
+wandb/
+runs/
+tensorboard/
+*.pt
+*.pth
+*.ckpt
+*.safetensors

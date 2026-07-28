@@ -1,0 +1,69 @@
+{
+  "master_seed": 20260727,
+  "dimensions": [
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096
+  ],
+  "informative_dimensions": [
+    1,
+    4
+  ],
+  "repeats": 10,
+  "split_sizes": {
+    "train": 32768,
+    "validation": 4096,
+    "test": 8192
+  },
+  "data": {
+    "dtype": "float32",
+    "standardize_inputs": true,
+    "standard_deviation_floor": 1e-08
+  },
+  "model": {
+    "compression_factor": 8,
+    "scalar_output_threshold": 32,
+    "activation": "relu",
+    "use_bias": true,
+    "batch_normalization": false,
+    "dropout": 0.0
+  },
+  "training": {
+    "batch_size": 256,
+    "evaluation_batch_size": 1024,
+    "maximum_epochs": 200,
+    "optimizer": "adamw",
+    "learning_rate": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
+    "weight_decay": 0.0001,
+    "scheduler": {
+      "name": "reduce_lr_on_plateau",
+      "factor": 0.5,
+      "patience": 7,
+      "threshold": 1e-06,
+      "minimum_learning_rate": 1e-06
+    },
+    "early_stopping": {
+      "patience": 20,
+      "minimum_delta": 1e-06
+    },
+    "deterministic_algorithms": true,
+    "deterministic_warn_only": true,
+    "data_loader_workers": 0,
+    "gradient_clipping": null,
+    "automatic_mixed_precision": false
+  },
+  "analysis": {
+    "confidence_level": 0.95,
+    "primary_metric": "test_r2",
+    "save_checkpoints": true
+  }
+}
