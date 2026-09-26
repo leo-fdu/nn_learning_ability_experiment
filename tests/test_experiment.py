@@ -84,7 +84,7 @@ class DataGenerationTests(unittest.TestCase):
         y = split.targets.astype(np.float64)
         signals = split.features[:, :4].astype(np.float64)
         for index in range(4):
-            self.assertLess(abs(signals[:, index].var() - 1.125), 0.04)
+            self.assertLess(abs(signals[:, index].var() - 0.3125), 0.04)
             self.assertLess(
                 abs(np.cov(signals[:, index], y, ddof=0)[0, 1] - 0.25),
                 0.04,
@@ -133,6 +133,10 @@ class ModelAndTheoryTests(unittest.TestCase):
         config = load_config(PROJECT_ROOT / "configs" / "main.json")
         self.assertEqual(config["dimensions"], [64, 128, 256, 512, 1024, 2048, 4096])
         self.assertEqual(config["repeats"], 10)
+        self.assertEqual(
+            config["data"]["four_dimensional_formula"],
+            "y_over_4_plus_epsilon_over_2",
+        )
 
     def test_architecture_widths(self) -> None:
         expected = {
@@ -172,8 +176,8 @@ class ModelAndTheoryTests(unittest.TestCase):
         four = analytic_bayes(4)
         self.assertAlmostEqual(one["mse"], 0.5)
         self.assertAlmostEqual(one["r2"], 0.5)
-        self.assertAlmostEqual(four["mse"], 17.0 / 21.0)
-        self.assertAlmostEqual(four["r2"], 4.0 / 21.0)
+        self.assertAlmostEqual(four["mse"], 0.5)
+        self.assertAlmostEqual(four["r2"], 0.5)
 
     def test_forward_shape(self) -> None:
         model = build_model(512)

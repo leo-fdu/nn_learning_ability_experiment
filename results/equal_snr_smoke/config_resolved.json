@@ -1,17 +1,23 @@
 {
   "master_seed": 20260727,
-  "dimensions": [64, 128, 256, 512, 1024, 2048, 4096],
-  "informative_dimensions": [1, 4],
-  "repeats": 10,
+  "dimensions": [
+    64,
+    4096
+  ],
+  "informative_dimensions": [
+    1,
+    4
+  ],
+  "repeats": 1,
   "split_sizes": {
-    "train": 32768,
-    "validation": 4096,
-    "test": 8192
+    "train": 512,
+    "validation": 128,
+    "test": 256
   },
   "data": {
     "dtype": "float32",
     "standardize_inputs": true,
-    "standard_deviation_floor": 1e-8,
+    "standard_deviation_floor": 1e-08,
     "one_dimensional_formula": "y_plus_epsilon",
     "four_dimensional_formula": "y_over_4_plus_epsilon_over_2"
   },
@@ -24,24 +30,27 @@
     "dropout": 0.0
   },
   "training": {
-    "batch_size": 256,
-    "evaluation_batch_size": 1024,
-    "maximum_epochs": 200,
+    "batch_size": 128,
+    "evaluation_batch_size": 256,
+    "maximum_epochs": 2,
     "optimizer": "adamw",
     "learning_rate": 0.001,
-    "betas": [0.9, 0.999],
-    "epsilon": 1e-8,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "epsilon": 1e-08,
     "weight_decay": 0.0001,
     "scheduler": {
       "name": "reduce_lr_on_plateau",
       "factor": 0.5,
       "patience": 7,
-      "threshold": 1e-6,
-      "minimum_learning_rate": 1e-6
+      "threshold": 1e-06,
+      "minimum_learning_rate": 1e-06
     },
     "early_stopping": {
-      "patience": 20,
-      "minimum_delta": 1e-6
+      "patience": 2,
+      "minimum_delta": 1e-06
     },
     "deterministic_algorithms": true,
     "deterministic_warn_only": true,

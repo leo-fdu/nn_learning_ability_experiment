@@ -5,12 +5,12 @@ SCRIPT_DIRECTORY="$(cd -- "$(dirname -- "$0")" && pwd)"
 PROJECT_DIRECTORY="$(cd -- "${SCRIPT_DIRECTORY}/.." && pwd)"
 cd "${PROJECT_DIRECTORY}"
 
-SMOKE_OUTPUT="${PROJECT_DIRECTORY}/results/smoke"
-MAIN_OUTPUT="${PROJECT_DIRECTORY}/results/main"
+SMOKE_OUTPUT="${PROJECT_DIRECTORY}/results/equal_snr_smoke"
+MAIN_OUTPUT="${PROJECT_DIRECTORY}/results/equal_snr_main"
 ANALYSIS_OUTPUT="${MAIN_OUTPUT}/summary"
 
 if [[ -e "${SMOKE_OUTPUT}" || -e "${MAIN_OUTPUT}" ]]; then
-  echo "Refusing to overwrite existing results/smoke or results/main."
+  echo "Refusing to overwrite existing equal-SNR result directories."
   echo "Move the existing result directory elsewhere before running again."
   exit 2
 fi

@@ -20,7 +20,9 @@ from torch.utils.data import DataLoader, TensorDataset
 
 
 SPLIT_IDS = {"train": 0, "validation": 1, "test": 2}
-COMPONENT_IDS = {"target": 0, "epsilon": 1, "eta": 2, "noise": 3}
+# Keep the legacy stream IDs so that the equal-SNR rerun changes only the
+# four-dimensional signal formula; targets and irrelevant features remain paired.
+COMPONENT_IDS = {"target": 0, "epsilon": 1, "noise": 3}
 
 
 @dataclass
@@ -86,6 +88,16 @@ def validate_config(config: Mapping[str, Any]) -> None:
     if float(data["standard_deviation_floor"]) != 1e-8:
         raise ValueError(
             "the experiment contract requires standard_deviation_floor=1e-8"
+        )
+    if data["one_dimensional_formula"] != "y_plus_epsilon":
+        raise ValueError(
+            "the experiment contract requires one_dimensional_formula="
+            "'y_plus_epsilon'"
+        )
+    if data["four_dimensional_formula"] != "y_over_4_plus_epsilon_over_2":
+        raise ValueError(
+            "the experiment contract requires four_dimensional_formula="
+            "'y_over_4_plus_epsilon_over_2'"
         )
     if int(model["compression_factor"]) != 8:
         raise ValueError("the experiment contract requires compression_factor=8")
@@ -177,22 +189,10 @@ def generate_split(
         epsilon = epsilon_rng.standard_normal(sample_count, dtype=np.float32)
         features[:, 0] = targets + epsilon
     else:
-        eta_rng = _make_rng(
-            master_seed,
-            informative_dimensions,
-            repeat,
-            split_id,
-            COMPONENT_IDS["eta"],
-        )
         epsilon = epsilon_rng.standard_normal(
             (sample_count, informative_dimensions), dtype=np.float32
         )
-        eta = eta_rng.standard_normal(
-            (sample_count, informative_dimensions), dtype=np.float32
-        )
-        features[:, :informative_dimensions] = (
-            (targets[:, None] + epsilon) / 4.0 + eta
-        )
+        features[:, :informative_dimensions] = targets[:, None] / 4.0 + epsilon / 2.0
 
     return DatasetSplit(features=features, targets=targets)
 
@@ -328,7 +328,7 @@ def analytic_bayes(informative_dimensions: int) -> dict[str, float]:
     if informative_dimensions == 1:
         return {"mse": 0.5, "r2": 0.5}
     if informative_dimensions == 4:
-        return {"mse": 17.0 / 21.0, "r2": 4.0 / 21.0}
+        return {"mse": 0.5, "r2": 0.5}
     raise ValueError("informative_dimensions must be 1 or 4")
 
 
